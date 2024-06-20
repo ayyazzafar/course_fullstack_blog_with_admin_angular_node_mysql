@@ -6,19 +6,28 @@ import { type } from "os";
 @Table
 export class Token extends Model<Token>{
 
-    @Column
+    @Column({
+        allowNull: false
+    })
     token?: string;
 
 
+    @Column({
+        type: DataType.ENUM('activation', 'reset'),
+        allowNull: false
+    })
+    type?: 'activation' | 'reset';
+
+
     @ForeignKey(()=>User)
-    @Column
+    @Column({
+        allowNull: false
+    })
     userId?: number;
+    
 
     @BelongsTo(()=>User)
     user?: User;
 
-    @Column({
-        type: DataType.ENUM('activation', 'reset')
-    })
-    type?: 'activation' | 'reset';
+    
 }

@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';
-dotenv.config();
-
+dotenv.config({
+  path:'./src/.env'
+});
 import express from 'express';
 
 import './database/index'
