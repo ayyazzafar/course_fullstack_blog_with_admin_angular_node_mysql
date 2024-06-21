@@ -12,6 +12,12 @@ export class Tag extends Model<Tag>{
         allowNull: false
     })
     name?: string;
+
+    @Column({
+        allowNull: false,
+        unique: true
+    })
+    slug?: string
      
 
     @ForeignKey(()=>User)
