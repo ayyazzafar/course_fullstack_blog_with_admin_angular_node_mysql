@@ -12,18 +12,18 @@ export class User extends Model<User> {
   @Column({
     allowNull: false
   })
-  name: string = "";
+  name?: string;
 
   @Column({
     unique: true,
     allowNull: false
   })
-  email: string = "";
+  email?: string ;
 
   @Column({
     allowNull: false
   })
-  password: string = "";
+  password?: string ;
 
   @HasMany(()=>Post)
   posts: Post[] = []
