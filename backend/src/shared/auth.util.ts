@@ -4,15 +4,23 @@ import { User } from '../models/User';
 import { Request, Response } from 'express';
 const secretKey = process.env.JWT_SECRET!;
 
-export function generateToken(userId: number): string{
-    const payload = {userId};
-    const token = jwt.sign(payload, secretKey, {
-      expiresIn: '1h'
-    });
-    
-    return token;
-    
-  }
+export function generateToken(userId: number, expiresIn='1h'): string{
+  const payload = {userId};
+  const token = jwt.sign(payload, secretKey, {
+    expiresIn
+  });
+  
+  return token;
+  
+}
+
+export function encryptPassword(password: string): string{
+
+  const encryptedPassword = jwt.sign(password, secretKey);
+  
+  return encryptedPassword;
+  
+}
   
   export function verifyToken(token:string){
     try{
@@ -25,7 +33,7 @@ export function generateToken(userId: number): string{
   export function authenticateJWT(req: Request , res:Response, next:Function){
     const token = req.header('Authorization')?.replace('Bearer ', '');
     if(!token){
-      return res.status(401).json({message: 'Access Denied.'});
+      return res.status(401).json({message: 'Access Denied. Token is not provided.'});
     }
   
     const verified = verifyToken(token);

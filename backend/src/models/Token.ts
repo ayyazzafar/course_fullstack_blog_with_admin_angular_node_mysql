@@ -13,10 +13,10 @@ export class Token extends Model<Token>{
 
 
     @Column({
-        type: DataType.ENUM('activation', 'reset'),
+        type: DataType.ENUM('activation', 'reset', 'access', 'refresh'),
         allowNull: false
     })
-    type?: 'activation' | 'reset';
+    type?: 'activation' | 'reset' | 'access' | 'refresh';
 
 
     @ForeignKey(()=>User)

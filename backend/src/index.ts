@@ -9,6 +9,7 @@ import categoryRoutes from './routes/category.routes';
 import tagRoutes from './routes/tag.routes';
 import postRoutes from './routes/post.routes';
 import commentRoutes from './routes/comment.routes';
+import authRoutes from './routes/auth.routes';
 
 
 const app = express();
@@ -22,6 +23,7 @@ app.use('/api/categories', categoryRoutes);
 app.use('/api/tags', tagRoutes);
 app.use('/api/posts', postRoutes);
 app.use('/api/comments', commentRoutes);
+app.use('/api/auth', authRoutes)
 
 
 
