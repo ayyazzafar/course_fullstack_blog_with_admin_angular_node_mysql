@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 dotenv.config({
   path:'./src/.env'
 });
-import express from 'express';
+import express, { Request, Response } from 'express';
 
 import './database/index'
 import categoryRoutes from './routes/category.routes';
@@ -28,3 +28,8 @@ app.use('/api/comments', commentRoutes);
 app.listen(port, () => {
     console.log(`Server is running on port http://localhost:${port}`);
 });
+
+
+
+
+// console.log(require("crypto").randomBytes(64).toString("base64"))
