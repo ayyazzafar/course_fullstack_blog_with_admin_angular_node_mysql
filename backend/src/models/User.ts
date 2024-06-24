@@ -1,4 +1,4 @@
-import { Column, HasMany, Model, Table } from "sequelize-typescript";
+import { Column, DataType, Default, HasMany, Model, Table } from "sequelize-typescript";
 import { Post } from "./Post";
 import { Comment } from "./Comment";
 import { Token } from "./Token";
@@ -7,38 +7,42 @@ import { Tag } from "./Tag";
 
 @Table
 export class User extends Model<User> {
-
-
   @Column({
-    allowNull: false
+    allowNull: false,
   })
   name?: string;
 
   @Column({
     unique: true,
-    allowNull: false
+    allowNull: false,
   })
-  email?: string ;
+  email?: string;
+
+
+  @Default('pending')
+  @Column({
+    allowNull: false,
+    type: DataType.ENUM('active', 'pending')
+  })
+  status?: string;
 
   @Column({
-    allowNull: false
+    allowNull: false,
   })
-  password?: string ;
+  password?: string;
 
-  @HasMany(()=>Post)
-  posts: Post[] = []
+  @HasMany(() => Post)
+  posts: Post[] = [];
 
-  @HasMany(()=>Comment)
-  comments: Comment[] = []
+  @HasMany(() => Comment)
+  comments: Comment[] = [];
 
-  @HasMany(()=>Token)
-  tokens: Token[] = []
+  @HasMany(() => Token)
+  tokens: Token[] = [];
 
-  @HasMany(()=>Category)
-  categories: Category[] = []
+  @HasMany(() => Category)
+  categories: Category[] = [];
 
-  @HasMany(()=>Tag)
-  tags: Tag[] = []
-  
-
+  @HasMany(() => Tag)
+  tags: Tag[] = [];
 }

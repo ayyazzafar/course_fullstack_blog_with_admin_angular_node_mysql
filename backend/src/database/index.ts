@@ -3,7 +3,7 @@
 import {connection} from './connection';
 
 connection.sync({
-    // force: true
+    // force: true 
 })
  
 export {

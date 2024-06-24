@@ -1,20 +1,21 @@
 import { Request, Response } from "express";
 import { z } from "zod";
-import { addUser, getUserByEmail } from "../services/user.service";
+import { addUser, getUserByEmail, updateUser } from "../services/user.service";
 import { encryptPassword, generateToken, verifyToken } from "../shared/auth.util";
 import { addToken, deleteTokens, getToken } from "../services/token.service";
+import { sendConfirmationEmail, sendForgotPasswordEmail } from "../shared/email.util";
+const passwordZodRules = z.string().min(6).max(100).regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$/,
+    {
+        message: 'Password must contain at least one uppercase letter, one lowercase letter and one number.'
+    }
 
+); // Minimum six characters, at least one uppercase letter, one lowercase letter and one number
 
 export const registerController = async (req: Request, res: Response) => {
     const schema = z.object({
         name: z.string().min(3).max(100),
         email: z.string().email(),
-        password: z.string().min(6).max(100).regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$/,
-            {
-                message: 'Password must contain at least one uppercase letter, one lowercase letter and one number.'
-            }
-
-        ), // Minimum six characters, at least one uppercase letter, one lowercase letter and one number
+        password: passwordZodRules
     });
 
     const parsedData = schema.safeParse(req.body);
@@ -41,6 +42,11 @@ export const registerController = async (req: Request, res: Response) => {
     delete user.password;
 
     // TODO: Send email verification
+    const token = generateToken(user.id!);
+
+    await addToken(token, 'activation', user.id!)
+
+   await sendConfirmationEmail(email,token)
 
     return res.status(201).json(user);
 }
@@ -177,5 +183,111 @@ export const logoutController = async (req: Request, res: Response) => {
 
     return res.status(200).json({message: 'Logged out.'});
 
+
+}
+
+export const confirmEmailController = async (req: Request, res: Response) => {
+    const { token} = req.params;
+
+    const isTokenValid = verifyToken(token);
+
+    if(!isTokenValid){
+        return res.status(400).json({message: 'Invalid token or expired.'});
+    }
+
+    const dbToken = await getToken(token);
+
+    if(!dbToken || dbToken.get('type') !=='activation'){
+        return res.status(400).json({message: 'Invalid token.'});
+    }
+
+    const userId = dbToken.get('userId');
+
+    await updateUser({
+        id: userId!,
+        status: 'active'
+    })
+
+    await deleteTokens(userId!);
+
+    return res.status(200).json({message: 'Email confirmed.'});
+}
+
+export const forgotPasswordController = async (req: Request, res: Response) => {
+    const schema = z.object({
+        email: z.string().email(),
+        callbackUrl: z.string().url()
+    })
+
+    const parsedData = schema.safeParse(req.body);
+
+    if(!parsedData.success)
+        return res.status(400).json(parsedData.error);
+
+    const { email, callbackUrl } = parsedData.data;
+
+    const user = await getUserByEmail(email);
+
+    if(!user)
+        return res.status(400).json({message: 'User not found.'});
+
+    // Generate token
+    const token = generateToken(user.get('id'));
+
+    // delete old tokens
+    await deleteTokens(user.get('id'));
+
+    // Save new token in database
+    await addToken(token, 'reset', user.get('id'));
+
+    // Send email
+    await sendForgotPasswordEmail(email, token, callbackUrl);
+
+    return res.status(200).json({message: 'Email sent.'});
+
+
+}
+
+
+export const resetPasswordController = async (req: Request, res: Response) => {
+
+    const schema = z.object({
+        token: z.string(),
+        password: passwordZodRules
+    });
+
+    const parsedData = schema.safeParse(req.body);
+
+    if(!parsedData.success)
+        return res.status(400).json(parsedData.error);
+
+    const { token, password } = parsedData.data;
+
+    const isTokenValid = verifyToken(token);
+
+    if(!isTokenValid){
+        return res.status(400).json({message: 'Invalid token or expired.'});
+    }
+
+    const dbToken = await getToken(token);
+
+    if(!dbToken || dbToken.get('type') !== 'reset'){
+        return res.status(400).json({message: 'Invalid token.'});
+    }
+
+    const userId = dbToken.get('userId');
+
+
+    const encryptedPassword = encryptPassword(password);
+
+    await updateUser({
+        id: userId!,
+        password: encryptedPassword
+    })
+
+    await deleteTokens(userId!);
+
+
+    return res.status(200).json({message: 'Password updated.'});
 
 }

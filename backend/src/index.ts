@@ -1,5 +1,8 @@
 import dotenv from 'dotenv';
 import express, { Request, Response } from 'express';
+dotenv.config({
+  path:'./src/.env'
+});
 import 'express-async-errors';
 import './database/index';
 import authRoutes from './routes/auth.routes';
@@ -8,9 +11,7 @@ import commentRoutes from './routes/comment.routes';
 import postRoutes from './routes/post.routes';
 import tagRoutes from './routes/tag.routes';
 import logger from './shared/logger.util';
-dotenv.config({
-  path:'./src/.env'
-});
+
 
 
 const app = express();
