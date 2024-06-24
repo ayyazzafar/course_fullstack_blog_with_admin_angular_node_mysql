@@ -41,7 +41,6 @@ export const registerController = async (req: Request, res: Response) => {
 
     delete user.password;
 
-    // TODO: Send email verification
     const token = generateToken(user.id!);
 
     await addToken(token, 'activation', user.id!)
@@ -69,6 +68,10 @@ export const loginController = async (req: Request, res: Response) => {
 
     if(!user)
         return res.status(400).json({message: 'User not found.'});
+
+    if(user.get('status') !== 'active'){
+        return res.status(400).json({message: 'Please confirm your email.'});
+    }
 
     const dbPassword = verifyToken(user.password!);
     
