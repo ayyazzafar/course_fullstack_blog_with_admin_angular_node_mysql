@@ -1,1 +1,13 @@
-<p>posts-list works!</p>
+<div class="py-10 xl:grid-cols-3 md:grid-cols-2  grid gap-10">
+  @for(post of posts; track post.id){
+    <div class="bg-white rounded-xl px-10 py-5 post">
+      <a [routerLink]="'post/'+post.id" class="font-extrabold text-xl mb-4 block !text-gray-800">
+        Introducing Global Load Balancer: Scale your HTTP traffic globally
+      </a>
+
+      <a href="#" class="underline text-sm">Author name</a>
+
+      <div class="mt-2 text-sm text-gray-500">July 9, 2024</div>
+    </div>
+  }
+</div>
