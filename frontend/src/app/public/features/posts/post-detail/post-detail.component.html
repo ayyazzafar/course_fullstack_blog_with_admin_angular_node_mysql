@@ -1,1 +1,104 @@
-<p>post-detail works!</p>
+<h1>Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic omnis officia doloribus velit tempora quae modi dolorem
+    unde.</h1>
+
+<!-- display category and create date -->
+
+<div class="flex justify-between mb-20">
+    <p>Category: <a [routerLink]="['/categories', 'hello-world']"><strong>Hello World</strong></a></p>
+    <p>Created: <strong>2020-01-01</strong></p>
+</div>
+
+
+<p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dignissimos assumenda, quisquam quidem magni minima sunt
+    animi harum maiores a! Illum facilis incidunt iste, exercitationem fugiat minima numquam sint consequatur!
+    Reprehenderit.
+    Rem tempora obcaecati, eveniet architecto expedita quas cum vel illum consequuntur nihil tempore officiis, atque
+    blanditiis distinctio neque! Delectus minima et eaque at beatae odio quisquam nostrum corrupti quo a.<br>
+    Nesciunt cupiditate ullam molestias mollitia nisi necessitatibus sequi quisquam obcaecati ipsa explicabo quae,
+    voluptatibus pariatur nam placeat autem minima ducimus maiores? Quibusdam facere, unde voluptatibus fuga omnis
+    reprehenderit quo voluptate.
+    Architecto excepturi cum porro illo sapiente adipisci at placeat maiores sit minima. Facere eius iste culpa eveniet
+    magnam non inventore, sequi consequatur ducimus velit, eos earum animi ad, delectus fuga!<br>
+    Sint eveniet ducimus odio libero facere fuga, repudiandae non repellendus deserunt, blanditiis repellat natus
+    pariatur veritatis omnis illum vel vitae tenetur quo culpa asperiores id accusantium quam labore. Consequatur,
+    eaque.</p>
+
+<p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dignissimos assumenda, quisquam quidem magni minima sunt
+    animi harum maiores a! Illum facilis incidunt iste, exercitationem fugiat minima numquam sint consequatur!
+    Reprehenderit.
+    Rem tempora obcaecati, eveniet architecto expedita quas cum vel illum consequuntur nihil tempore officiis, atque
+    blanditiis distinctio neque! Delectus minima et eaque at beatae odio quisquam nostrum corrupti quo a.<br>
+    Nesciunt cupiditate ullam molestias mollitia nisi necessitatibus sequi quisquam obcaecati ipsa explicabo quae,
+    voluptatibus pariatur nam placeat autem minima ducimus maiores? Quibusdam facere, unde voluptatibus fuga omnis
+    reprehenderit quo voluptate.
+    Architecto excepturi cum porro illo sapiente adipisci at placeat maiores sit minima. Facere eius iste culpa eveniet
+    magnam non inventore, sequi consequatur ducimus velit, eos earum animi ad, delectus fuga!<br>
+    Sint eveniet ducimus odio libero facere fuga, repudiandae non repellendus deserunt, blanditiis repellat natus
+    pariatur veritatis omnis illum vel vitae tenetur quo culpa asperiores id accusantium quam labore. Consequatur,
+    eaque.</p>
+
+
+<p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dignissimos assumenda, quisquam quidem magni minima sunt
+    animi harum maiores a! Illum facilis incidunt iste, exercitationem fugiat minima numquam sint consequatur!
+    Reprehenderit.
+    Rem tempora obcaecati, eveniet architecto expedita quas cum vel illum consequuntur nihil tempore officiis, atque
+    blanditiis distinctio neque! Delectus minima et eaque at beatae odio quisquam nostrum corrupti quo a.<br>
+    Nesciunt cupiditate ullam molestias mollitia nisi necessitatibus sequi quisquam obcaecati ipsa explicabo quae,
+    voluptatibus pariatur nam placeat autem minima ducimus maiores? Quibusdam facere, unde voluptatibus fuga omnis
+    reprehenderit quo voluptate.
+    Architecto excepturi cum porro illo sapiente adipisci at placeat maiores sit minima. Facere eius iste culpa eveniet
+    magnam non inventore, sequi consequatur ducimus velit, eos earum animi ad, delectus fuga!<br>
+    Sint eveniet ducimus odio libero facere fuga, repudiandae non repellendus deserunt, blanditiis repellat natus
+    pariatur veritatis omnis illum vel vitae tenetur quo culpa asperiores id accusantium quam labore. Consequatur,
+    eaque.</p>
+
+
+<!-- Tags -->
+<div class="mt-20">
+    <h2 class="text-2xl">Tags</h2>
+    <div class="flex mt-5">
+        @for(tag of ['tag1', 'tag2', 'tag3', 'tag4', 'tag5']; track tag){
+        <a [routerLink]="['/tags', tag]"
+            class="bg-blue-500 text-white px-4 py-2 mr-2 rounded-md hover:bg-blue-600 transition-colors duration-300">
+            {{tag}}
+        </a>
+        }
+    </div>
+</div>
+
+
+<!-- Comments Section  -->
+
+<div class="mt-20">
+    <h2 class="text-2xl mb-10">
+        Comments
+    </h2>
+
+
+    <div class="flex mb-4">
+        <img class="w-10 h-10 rounded-full mr-4" src="img.png" />
+
+        <textarea name="" id=""
+            class="w-full h-[200px] border-solid border-[1px] border-gray-400 rounded-md p-4 outline-none"
+            placeholder="Enter your comment"></textarea>
+    </div>
+
+    <button
+        class="bg-blue-500 text-white px-4 py-2 mb-10  rounded-md hover:bg-blue-600 transition-colors duration-300 float-right">
+        Post Comment</button>
+
+    @for(item of [1, 2, 3, 4, 5]; track item){
+    <div class="flex w-full mb-5">
+        <div>
+            <img class="w-10 h-10 rounded-full mr-4" src="img.png" />
+        </div>
+        <div class="border-[1px] border-solid border-gray-300 grow p-4 rounded-xl">
+            <div class="font-bold">John Doe</div>
+            <div class="text-gray-500 mb-4">July 9, 2024</div>
+            <div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloribus, quos.</div>
+        </div>
+    </div>
+    }
+
+
+</div>
