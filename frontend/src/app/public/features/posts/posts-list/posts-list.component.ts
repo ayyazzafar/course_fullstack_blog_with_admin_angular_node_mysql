@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { AfterContentInit, Component, inject, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { PostService } from '../../../../core/services/post.service';
+import { IPost } from '../../../../core/interfaces/models/post.model.interface';
 
 @Component({
   selector: 'app-posts-list',
@@ -10,31 +12,20 @@ import { RouterLink } from '@angular/router';
   templateUrl: './posts-list.component.html',
   styleUrl: './posts-list.component.scss'
 })
-export class PostsListComponent {
-  posts = [
-    {
-      id: 1,
-      title: 'Post 1',
-      content: 'This is the content of post 1',
-      createdAt: new Date()
-    },
-    {
-      id: 2,
-      title: 'Post 2',
-      content: 'This is the content of post 2',
-      createdAt: new Date()
-    },
-    {
-      id: 3,
-      title: 'Post 3',
-      content: 'This is the content of post 3',
-      createdAt: new Date()
-    },
-    {
-      id: 4,
-      title: 'Post 4',
-      content: 'This is the content of post 4',
-      createdAt: new Date()
-    }
-  ]
+export class PostsListComponent implements AfterContentInit {
+  @Input() categoryId?: number;
+  @Input() tagId?: number;
+  posts: IPost[] = [];
+  postService = inject(PostService);
+
+
+  ngAfterContentInit(){
+    this.postService.getPosts({
+      categoryId: this.categoryId,
+      tagId: this.tagId
+    }).subscribe((data)=>{
+      this.posts = data;
+    });
+  }
+
 }

@@ -1,4 +1,4 @@
-import { Column, ForeignKey, Model, Table } from "sequelize-typescript";
+import { BelongsTo, Column, ForeignKey, Model, Table } from "sequelize-typescript";
 import { Post } from "./Post";
 import { Tag } from "./Tag";
 
@@ -17,4 +17,12 @@ export class PostTag  extends Model<PostTag>{
         allowNull: false
     })
     tagId?: number
+
+    // add associations
+    @BelongsTo(()=>Post)
+    post?: Post
+
+    @BelongsTo(()=>Tag)
+    tag?: Tag
+    
 }

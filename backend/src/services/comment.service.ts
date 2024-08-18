@@ -1,9 +1,18 @@
 import { Comment } from "../models/Comment"
+import { User } from "../models/User";
 
 
 export const getPostComments = async (postId: number) => {
     return Comment.findAll({
-        where:{
+        include: [
+            {
+                model: User,
+                attributes: {
+                    exclude: ['password']
+                }
+            }
+        ],
+        where: {
             postId
         }
     });
@@ -24,19 +33,19 @@ export const getCommentById = async (commentId: number) => {
     return Comment.findByPk(commentId);
 }
 
-export const updateComment = async (commentId: number, content:string)=>{
+export const updateComment = async (commentId: number, content: string) => {
 
-    const comment  = await getCommentById(commentId);
-    if(!comment)
+    const comment = await getCommentById(commentId);
+    if (!comment)
         throw new Error("Comment not found");
 
     comment.content = content;
     return comment.save();
 }
 
-export const deleteComment = async (commentId: number)=>{
+export const deleteComment = async (commentId: number) => {
     const comment = await getCommentById(commentId);
-    if(!comment)
+    if (!comment)
         throw new Error("Comment not found");
 
     return comment.destroy();

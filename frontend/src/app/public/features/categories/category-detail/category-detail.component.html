@@ -1,3 +1,6 @@
+@if(category){
 
-<h1 >Category: {{ category }}</h1>
-<app-posts-list></app-posts-list>
+<h1>Category: {{ category.name }}</h1>
+<app-posts-list [categoryId]="category.id"></app-posts-list>
+
+}

@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { addTagController, deleteTagController, getTagsController, updateTagController } from "../controllers/tag.controller";
+import { addTagController, deleteTagController, getPostTagsController, getTagBySlugController, getTagsController, updateTagController } from "../controllers/tag.controller";
 import { authenticateJWT } from "../shared/auth.util";
 
 
@@ -10,6 +10,8 @@ router.get('/', getTagsController);
 router.post('/', authenticateJWT, addTagController);
 router.put('/', authenticateJWT, updateTagController);
 router.delete('/', authenticateJWT, deleteTagController);
+router.get('/getPostTagRelations/:postId', getPostTagsController);
+router.get('/getTagBySlug/:slug', getTagBySlugController);
 
 
 
