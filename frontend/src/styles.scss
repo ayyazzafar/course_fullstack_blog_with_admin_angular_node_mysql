@@ -3,6 +3,7 @@
 @tailwind utilities;
 // primary color
 
+
 :root{
     --primary: #0069ff;
 }
@@ -19,3 +20,5 @@ p{
 .cta{
     @apply bg-[var(--primary)] text-white px-4 py-2 rounded-md hover:bg-[var(--primary)] transition-all duration-200;
 }
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

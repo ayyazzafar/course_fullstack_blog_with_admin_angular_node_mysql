@@ -1,0 +1,21 @@
+<div class="w-[250px]">
+    <div class="hover:bg-gray-200 text-base ">
+        <a class="w-full block h-full  pl-5 py-4" routerLink="/admin"
+        [routerLinkActiveOptions]="{exact:true}"
+        routerLinkActive="bg-gray-100" 
+        >Posts</a>
+    </div>
+    <mat-divider></mat-divider>
+    <div class="hover:bg-gray-200 text-base ">
+        <a 
+        routerLinkActive="bg-gray-100" 
+        class="w-full block h-full  pl-5 py-4" routerLink="/admin/categories">Categories</a>
+    </div>
+    <mat-divider></mat-divider>
+
+    <div class="hover:bg-gray-200 text-base ">
+        <a 
+        routerLinkActive="bg-gray-100" 
+        class="w-full block h-full  pl-5 py-4" routerLink="/admin/tags" >Tags</a>
+    </div>
+</div>
