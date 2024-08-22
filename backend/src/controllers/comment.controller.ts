@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { z } from "zod";
 import { getPostById } from "../services/post.service";
 import { addComment, deleteComment, getCommentById, getPostComments, updateComment } from "../services/comment.service";
+import { User } from "../models/User";
 
 
 export const getPostCommentsController = async (req: Request, res: Response) => {
@@ -36,8 +37,10 @@ export const getPostCommentsController = async (req: Request, res: Response) => 
 export const addCommentController = async (req: Request, res: Response) => {
     const schema = z.object({
         postId: z.number(),
-        content: z.string()
+        content: z.string(),
     })
+
+    const user: User = (req as any).user;
 
 
     const safeData = schema.safeParse(req.body);
@@ -45,7 +48,7 @@ export const addCommentController = async (req: Request, res: Response) => {
         return res.status(400).json(safeData.error)
 
     const { postId, content } = safeData.data;
-    const userId = 1; // hardcoded user id
+    const userId = user.get('id'); 
 
     const post = await getPostById(postId);
 

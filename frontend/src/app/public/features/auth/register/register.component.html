@@ -1,1 +1,74 @@
-<p>register works!</p>
+<form (submit)="submit()" class="card w-[400px]" [formGroup]="form">
+    <div>
+        <label for="name">Name</label>
+        <input formControlName="name" type="text" id="name" name="name" placeholder="Full Name">
+
+        <!-- display errors -->
+        @if(
+        form.get('name')?.touched &&
+        form.get('name')?.errors
+        ){
+        @if(form.get('name')?.errors?.['required']){
+        <div class="text-red-500">Name is required</div>
+        }
+        }
+
+    </div>
+
+    <div>
+        <label for="email">Email</label>
+        <input formControlName="email" type="email" id="email" name="email" placeholder="Email">
+        <!-- display errors -->
+        @if(
+        form.get('email')?.touched &&
+        form.get('email')?.errors
+        ){
+        @if(form.get('email')?.errors?.['required']){
+        <div class="text-red-500">Email is required</div>
+        }
+
+        @if(form.get('email')?.errors?.['email']){
+        <div class="text-red-500">
+            Email is invalid
+        </div>
+        }
+        }
+    </div>
+
+    <div>
+        <label for="password">Password</label>
+        <input formControlName="password" type="password" id="password" name="password" placeholder="Password">
+        <!-- display errors -->
+        @if(
+        form.get('password')?.touched &&
+        form.get('password')?.errors
+        ){
+        @if(form.get('password')?.errors?.['required']){
+        <div class="text-red-500">Password is required</div>
+        }
+
+        @if(form.get('password')?.errors?.['minlength']){
+            <div class="text-red-500">
+                Password must be at least {{
+                form.get('password')?.errors?.['minlength'].requiredLength
+                }} characters
+            </div>
+            }
+
+            @if(form.get('password')?.errors?.['pattern']){
+                <div class="text-red-500">
+                    Password must contain at least one uppercase letter, one lowercase letter and one number.
+                </div>
+                }
+        }
+    </div>
+
+    <div class="flex justify-end mt-5">
+        <button [disabled]="!form.valid" type="submit">Register</button>
+
+    </div>
+
+    <div class="text-center mt-4 text-gray-600">Already have an account? <a routerLink="/auth/login">Login</a></div>
+
+
+</form>

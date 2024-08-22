@@ -1,0 +1,37 @@
+
+
+::ng-deep{
+    .card{
+
+        a{
+            @apply text-[var(--primary)]
+        }
+        
+        @apply bg-white shadow-md rounded-lg p-8;
+
+        label{
+            @apply text-gray-700 block text-sm font-bold mb-2 mt-5;
+        }
+
+        input{
+            @apply shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none  border-solid border-gray-300 ;
+
+            &.ng-invalid.ng-touched{
+                @apply border-red-500;
+
+                // placeholder color 
+                &::-webkit-input-placeholder{
+                    @apply text-red-500;
+                }
+            }
+        }
+
+        button[type="submit"]{
+            @apply bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded;
+
+            &[disabled]{
+                @apply bg-gray-400 cursor-not-allowed
+            }
+        }
+    }
+}

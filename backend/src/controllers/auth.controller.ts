@@ -20,7 +20,7 @@ export const registerController = async (req: Request, res: Response) => {
 
     const parsedData = schema.safeParse(req.body);
 
-    if(!parsedData.success){
+    if (!parsedData.success) {
         return res.status(400).json(parsedData.error);
     }
 
@@ -28,8 +28,8 @@ export const registerController = async (req: Request, res: Response) => {
 
     const existingUser = await getUserByEmail(email);
 
-    if(existingUser){
-        return res.status(400).json({message: 'User already exists.'});
+    if (existingUser) {
+        return res.status(400).json({ message: 'User already exists.' });
     }
 
     password = encryptPassword(password);
@@ -45,7 +45,7 @@ export const registerController = async (req: Request, res: Response) => {
 
     await addToken(token, 'activation', user.id!)
 
-   await sendConfirmationEmail(email,token)
+    await sendConfirmationEmail(email, token)
 
     return res.status(201).json(user);
 }
@@ -59,24 +59,24 @@ export const loginController = async (req: Request, res: Response) => {
 
     const parsedData = schema.safeParse(req.body);
 
-    if(!parsedData.success)
+    if (!parsedData.success)
         return res.status(400).json(parsedData.error);
 
     const { email, password } = parsedData.data;
 
     const user = await getUserByEmail(email);
 
-    if(!user)
-        return res.status(400).json({message: 'User not found.'});
+    if (!user)
+        return res.status(400).json({ message: 'User not found.' });
 
-    if(user.get('status') !== 'active'){
-        return res.status(400).json({message: 'Please confirm your email.'});
+    if (user.get('status') !== 'active') {
+        return res.status(400).json({ message: 'Please confirm your email.' });
     }
 
     const dbPassword = verifyToken(user.password!);
-    
-    if(dbPassword !== password){
-        return res.status(400).json({message: 'Invalid password.'});
+
+    if (dbPassword !== password) {
+        return res.status(400).json({ message: 'Invalid password.' });
     }
 
     // Generate token
@@ -87,8 +87,8 @@ export const loginController = async (req: Request, res: Response) => {
     await deleteTokens(user.get('id'));
 
     // Save refresh token
-    await addToken(refreshToken, 'refresh', user.get('id') );
-    await addToken(accessToken, 'access', user.get('id') );
+    await addToken(refreshToken, 'refresh', user.get('id'));
+    await addToken(accessToken, 'access', user.get('id'));
 
     // create and send session to client
     const session = {
@@ -110,21 +110,21 @@ export const refreshTokenController = async (req: Request, res: Response) => {
 
     const parsedData = schema.safeParse(req.body);
 
-    if(!parsedData.success)
+    if (!parsedData.success)
         return res.status(400).json(parsedData.error);
 
     const { refreshToken } = parsedData.data;
 
     const isTokenValid = verifyToken(refreshToken);
 
-    if(!isTokenValid){
-        return res.status(400).json({message: 'Invalid token or expired.'});
+    if (!isTokenValid) {
+        return res.status(400).json({ message: 'Invalid token or expired.' });
     }
 
     const dbRefreshToken = await getToken(refreshToken);
 
-    if(!dbRefreshToken || dbRefreshToken.get('type') !== 'refresh')
-        return res.status(400).json({message: 'Invalid token.'});
+    if (!dbRefreshToken || dbRefreshToken.get('type') !== 'refresh')
+        return res.status(400).json({ message: 'Invalid token.' });
 
     const userId = dbRefreshToken.get('userId');
 
@@ -136,14 +136,14 @@ export const refreshTokenController = async (req: Request, res: Response) => {
 
     // Save refresh token
     await addToken(
-        newRefreshToken, 
+        newRefreshToken,
         'refresh',
         userId!
     );
 
     // Save access token
     await addToken(
-        accessToken, 
+        accessToken,
         'access',
         userId!
     );
@@ -163,45 +163,45 @@ export const logoutController = async (req: Request, res: Response) => {
 
     const parsedData = schema.safeParse(req.body);
 
-    if(!parsedData.success)
+    if (!parsedData.success)
         return res.status(400).json(parsedData.error);
 
     const { refreshToken } = parsedData.data;
 
     const isTokenValid = verifyToken(refreshToken);
 
-    if(!isTokenValid){
-        return res.status(400).json({message: 'Invalid token or expired.'});
+    if (!isTokenValid) {
+        return res.status(400).json({ message: 'Invalid token or expired.' });
     }
 
     const dbRefreshToken = await getToken(refreshToken);
 
-    if(!dbRefreshToken || dbRefreshToken.get('type')!=='refresh'){
-        return res.status(400).json({message: 'Invalid token.'});
+    if (!dbRefreshToken || dbRefreshToken.get('type') !== 'refresh') {
+        return res.status(400).json({ message: 'Invalid token.' });
     }
 
     const userId = dbRefreshToken.get('userId');
 
     await deleteTokens(userId!);
 
-    return res.status(200).json({message: 'Logged out.'});
+    return res.status(200).json({ message: 'Logged out.' });
 
 
 }
 
 export const confirmEmailController = async (req: Request, res: Response) => {
-    const { token} = req.params;
+    const { token } = req.params;
 
     const isTokenValid = verifyToken(token);
 
-    if(!isTokenValid){
-        return res.status(400).json({message: 'Invalid token or expired.'});
+    if (!isTokenValid) {
+        return res.status(400).json({ message: 'Invalid token or expired.' });
     }
 
     const dbToken = await getToken(token);
 
-    if(!dbToken || dbToken.get('type') !=='activation'){
-        return res.status(400).json({message: 'Invalid token.'});
+    if (!dbToken || dbToken.get('type') !== 'activation') {
+        return res.status(400).json({ message: 'Invalid token.' });
     }
 
     const userId = dbToken.get('userId');
@@ -213,26 +213,27 @@ export const confirmEmailController = async (req: Request, res: Response) => {
 
     await deleteTokens(userId!);
 
-    return res.status(200).json({message: 'Email confirmed.'});
+    res.redirect(
+        process.env.FRONTEND_URL +
+        '/auth/login');
 }
 
 export const forgotPasswordController = async (req: Request, res: Response) => {
     const schema = z.object({
         email: z.string().email(),
-        callbackUrl: z.string().url()
     })
 
     const parsedData = schema.safeParse(req.body);
 
-    if(!parsedData.success)
+    if (!parsedData.success)
         return res.status(400).json(parsedData.error);
 
-    const { email, callbackUrl } = parsedData.data;
+    const { email } = parsedData.data;
 
     const user = await getUserByEmail(email);
 
-    if(!user)
-        return res.status(400).json({message: 'User not found.'});
+    if (!user)
+        return res.status(400).json({ message: 'User not found.' });
 
     // Generate token
     const token = generateToken(user.get('id'));
@@ -244,9 +245,9 @@ export const forgotPasswordController = async (req: Request, res: Response) => {
     await addToken(token, 'reset', user.get('id'));
 
     // Send email
-    await sendForgotPasswordEmail(email, token, callbackUrl);
+    await sendForgotPasswordEmail(email, token);
 
-    return res.status(200).json({message: 'Email sent.'});
+    return res.status(200).json({ message: 'Email sent.' });
 
 
 }
@@ -261,21 +262,21 @@ export const resetPasswordController = async (req: Request, res: Response) => {
 
     const parsedData = schema.safeParse(req.body);
 
-    if(!parsedData.success)
+    if (!parsedData.success)
         return res.status(400).json(parsedData.error);
 
     const { token, password } = parsedData.data;
 
     const isTokenValid = verifyToken(token);
 
-    if(!isTokenValid){
-        return res.status(400).json({message: 'Invalid token or expired.'});
+    if (!isTokenValid) {
+        return res.status(400).json({ message: 'Invalid token or expired.' });
     }
 
     const dbToken = await getToken(token);
 
-    if(!dbToken || dbToken.get('type') !== 'reset'){
-        return res.status(400).json({message: 'Invalid token.'});
+    if (!dbToken || dbToken.get('type') !== 'reset') {
+        return res.status(400).json({ message: 'Invalid token.' });
     }
 
     const userId = dbToken.get('userId');
@@ -291,6 +292,6 @@ export const resetPasswordController = async (req: Request, res: Response) => {
     await deleteTokens(userId!);
 
 
-    return res.status(200).json({message: 'Password updated.'});
+    return res.status(200).json({ message: 'Password updated.' });
 
 }

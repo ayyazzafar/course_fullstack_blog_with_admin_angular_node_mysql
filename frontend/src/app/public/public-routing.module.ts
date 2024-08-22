@@ -19,8 +19,11 @@ const routes: Routes = [
       {
         path: 'categories',
         loadChildren: () => import('./features/categories/categories.module').then((m) => m.CategoriesModule),
-      }
+      },
+      
     ],
+
+
   },
 ];
 

@@ -1,6 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+// primary color
+
+:root{
+    --primary: #0069ff;
+}
 
 
 h1{
@@ -9,4 +14,8 @@ h1{
 
 p{
     @apply text-xl mb-5 leading-loose
+}
+
+.cta{
+    @apply bg-[var(--primary)] text-white px-4 py-2 rounded-md hover:bg-[var(--primary)] transition-all duration-200;
 }

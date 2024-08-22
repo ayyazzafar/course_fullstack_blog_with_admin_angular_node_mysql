@@ -19,10 +19,12 @@ export function sendConfirmationEmail(email: string, token: string) {
 }
 
 
-export function sendForgotPasswordEmail(email: string, token:string, callbackUrl: string){
+export function sendForgotPasswordEmail(email: string, token:string){
     const html = `
         <h1>Reset your password</h1>
-        <p>Click <a href="${callbackUrl}?token=${token}">here</a> to reset your password</p>
+        <p>Click <a href="${
+          process.env.FRONTEND_URL+'/auth/reset-password'
+        }?token=${token}">here</a> to reset your password</p>
         `;
     
     const resend = new Resend(process.env.RESEND_API_KEY);
