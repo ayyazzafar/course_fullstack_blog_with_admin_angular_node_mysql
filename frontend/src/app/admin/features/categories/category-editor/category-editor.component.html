@@ -1,1 +1,28 @@
-<p>category-editor works!</p>
+<form (submit)="form.value.id? update(): create()" action="" class="p-10" [formGroup]="form">
+
+
+
+    <mat-card class="p-10">
+        <mat-card-header>
+            <mat-card-title>
+                <h1 class="text-left">{{form.value.id ? 'Update ' : 'Create new '}}category</h1>
+            </mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content>
+            <mat-form-field appearance="outline">
+                <mat-label>Name</mat-label>
+                <input formControlName="name" matInput placeholder="Name">
+                <mat-error>Please
+                    <strong>enter</strong> a valid name
+                </mat-error>
+            </mat-form-field>
+        </mat-card-content>
+
+        <mat-card-actions>
+            <button mat-raised-button type="submit" [disabled]="form.invalid" color="primary">
+                {{form.value.id ? 'Update' : 'Create'}}
+            </button>
+        </mat-card-actions>
+    </mat-card>
+</form>

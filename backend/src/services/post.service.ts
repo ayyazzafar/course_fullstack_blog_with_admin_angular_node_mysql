@@ -89,7 +89,7 @@ export const updatePost = async (id: number, title?: string, content?: string, c
 }
 
 
-export const deletePost = (id: number)=>{
+export const deletePost = (id: number | number[])=>{
     return Post.destroy({
         where:{
             id

@@ -21,3 +21,11 @@ export const getPostTags = async (postId: number)=>{
         }
     });
 }
+
+export const deletePostTagRelations = async (postId: number | number[])=>{
+    return await PostTag.destroy({
+        where:{
+            postId
+        }
+    });
+}
