@@ -20,10 +20,6 @@ export class CommentService {
   }
 
   createComment(content: string, postId: number) {
-    return this.httpClient.post<IComment>(`${this.baseUrl}`, { content, postId }, {
-      headers:{
-        Authorization: `Bearer ${this.authService.session?.accessToken}`
-      }
-    });
+    return this.httpClient.post<IComment>(`${this.baseUrl}`, { content, postId });
   }
 }

@@ -72,13 +72,16 @@ export const updateCommentController = async (req: Request, res: Response) => {
         content: z.string()
     });
 
+    const user = (req as any).user as User
+
+
 
     const safeData = schema.safeParse(req.body);
     if(!safeData.success)
         return res.status(400).json(safeData.error)
 
     const { commentId, content } = safeData.data;
-    const userId = 1; // hardcoded user id
+    const userId = user.get('id');
 
     // check if commentId is valid
     const comment = await getCommentById(commentId);
@@ -104,13 +107,16 @@ export const deleteCommentController = async (req: Request, res: Response) => {
         commentId: z.number()
     });
 
+    const user = (req as any).user as User
+
+
     const safeData = schema.safeParse(req.body);
     if(!safeData.success)
         return res.status(400).json(safeData.error);
 
     const { commentId } = safeData.data;
 
-    const userId = 1; // hardcoded user id
+    const userId =  user.get('id');
 
     // check if commentId is valid
     const comment = await getCommentById(commentId);

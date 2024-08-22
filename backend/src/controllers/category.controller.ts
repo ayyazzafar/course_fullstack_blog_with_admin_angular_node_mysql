@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { addCategory, deleteCategory, getAllCategories, getCategoryById, getCategoryBySlug, updateCategory } from "../services/category.service";
 import { generateSlug } from "../shared/general.util";
 import { z } from "zod";
+import { User } from "../models/User";
 
 
 
@@ -30,13 +31,15 @@ export const addCategoryController = async (req: Request, res: Response) =>{
         name: z.string()
     });
 
+    const user = (req as any).user as User
+
     const schemaValidator = schema.safeParse(req.body);
     if(!schemaValidator.success){
         return res.status(400).json({message: 'Invalid data', errors: schemaValidator.error})
     }
 
     const {name} = req.body;
-    const userId = 1;
+    const userId = user.get('id');
     let slug = generateSlug(name);
 
     const categoryBySlug = await getCategoryBySlug(slug);

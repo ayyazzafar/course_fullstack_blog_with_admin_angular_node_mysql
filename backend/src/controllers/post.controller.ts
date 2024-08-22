@@ -5,6 +5,7 @@ import { generateSlug } from "../shared/general.util";
 import { getCategoryById } from "../services/category.service";
 import { getTagsByIds } from "../services/tag.service";
 import { addPostTags, getPostTags } from "../services/post-tag.service";
+import { User } from "../models/User";
 
 
 
@@ -33,6 +34,8 @@ export const getAllPostsController = async (req: Request, res: Response) => {
 }
 
 export const addPostController = async (req: Request, res: Response) => {
+
+    const user = (req as any).user as User
 
     const schema = z.object({
         title: z.string(),
@@ -68,7 +71,7 @@ export const addPostController = async (req: Request, res: Response) => {
         title,
         content,
         categoryId,
-        1, // hardcoded user id
+        user.get('id'),
         slug
     );
 
@@ -85,7 +88,9 @@ export const addPostController = async (req: Request, res: Response) => {
 
 export const updatePostController = async (req: Request, resp: Response) => {
 
-    const userId = 1; // hardcoded user id
+    const user = (req as any).user as User
+
+    const userId =  user.get('id');
 
     const schema = z.object({
         id: z.number(),
@@ -161,7 +166,9 @@ export const updatePostController = async (req: Request, resp: Response) => {
 
 export const deletePostController = async (req: Request, resp: Response) => {
 
-    const userId = 1; // hardcoded user id
+    const user = (req as any).user as User
+
+    const userId = user.get('id');
 
     const schema = z.object({
         id: z.number()
