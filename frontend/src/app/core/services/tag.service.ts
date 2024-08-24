@@ -10,16 +10,54 @@ import { ITag } from '../interfaces/models/tag.model.interface';
 })
 export class TagService {
 
-  baseUrl= environment.BACKEND_API_URL+'/api/tags';
+  baseUrl = environment.BACKEND_API_URL + '/api/tags';
   httpClient = inject(HttpClient);
 
   constructor() { }
 
   getPostTags(id: number) {
-    return this.httpClient.get<IPostTag[]>(this.baseUrl + '/getPostTagRelations/'+id);
+    return this.httpClient.get<IPostTag[]>(this.baseUrl + '/getPostTagRelations/' + id);
   }
 
-  getTag(slug: string){
-    return this.httpClient.get<ITag>(this.baseUrl + '/getTagBySlug/'+slug);
+  getTag(slug: string) {
+    return this.httpClient.get<ITag>(this.baseUrl + '/getTagBySlug/' + slug);
   }
+
+  getTags() {
+    return this.httpClient.get<ITag[]>(this.baseUrl);
+  }
+
+  deleteTag(id: number) {
+    return this.httpClient.delete(this.baseUrl, {
+      body: {
+        id
+      }
+    });
+  }
+
+  addTag({
+    name
+  }: {
+    name?: string
+
+  }) {
+    return this.httpClient.post(this.baseUrl, {
+      name
+    });
+  }
+
+  updateTag({
+    id,
+    name
+  }: {
+    id?: number,
+    name?: string
+
+  }) {
+    return this.httpClient.put(this.baseUrl, {
+      id,
+      name
+    });
+  }
+
 }

@@ -3,7 +3,7 @@ import { addTag, deleteTag, getAllTags, getTagById, getTagBySlug } from "../serv
 import { z } from "zod";
 import { generateSlug } from "../shared/general.util";
 import { getPostById } from "../services/post.service";
-import { getPostTags } from "../services/post-tag.service";
+import { deletePostTagRelations, getPostTags } from "../services/post-tag.service";
 import { User } from "../models/User";
 
 export const getTagsController = async (req: Request, res: Response) => {
@@ -91,6 +91,7 @@ export const deleteTagController = async (req: Request, res: Response) => {
     const tag = await getTagById(id);
 
     if(!tag) return res.status(404).json({message: 'Tag not found'});
+    await deletePostTagRelations({tagId: id});
 
     await deleteTag(id);
 

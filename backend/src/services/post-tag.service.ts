@@ -22,10 +22,16 @@ export const getPostTags = async (postId: number)=>{
     });
 }
 
-export const deletePostTagRelations = async (postId: number | number[])=>{
+export const deletePostTagRelations = async ({postId, tagId}:{
+    postId?: number | number[],
+    tagId?: number | number[]
+})=>{
+
+    let where: any = {};
+    if(postId) where.postId = postId;
+    if(tagId) where.tagId = tagId;
+
     return await PostTag.destroy({
-        where:{
-            postId
-        }
+        where
     });
 }

@@ -121,7 +121,9 @@ export const deleteCategoryController = async (req: Request, res: Response) => {
     const postIds = posts.map(post => post.get('id'));
 
 
-    await deletePostTagRelations(postIds); // delete post tag relations
+    await deletePostTagRelations({
+        postId: postIds
+    }); // delete post tag relations
 
     await deletePostComments(postIds); // delete post comments
 
