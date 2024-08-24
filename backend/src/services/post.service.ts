@@ -37,6 +37,9 @@ export const getAllPosts = (filters: {
                 id: filters.tagId
             }: undefined
         }
+    ],
+    order:[
+        ['createdAt', 'DESC']
     ]
     });
 }

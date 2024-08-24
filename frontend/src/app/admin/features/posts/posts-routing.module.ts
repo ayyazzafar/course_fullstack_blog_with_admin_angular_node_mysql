@@ -5,7 +5,12 @@ import { PostEditorComponent } from './post-editor/post-editor.component';
 
 const routes: Routes = [
   {path: '', component: PostsListComponent},
-  {path: 'post/:id', component: PostEditorComponent}
+  {
+    path:'add', component: PostEditorComponent
+  },
+  {
+    path:'edit/:slug', component: PostEditorComponent
+  }
 ];
 
 @NgModule({

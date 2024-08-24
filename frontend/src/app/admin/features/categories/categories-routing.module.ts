@@ -11,7 +11,7 @@ const routes: Routes = [
     path:'add', component: CategoryEditorComponent
   },
   {
-    path:':slug', component: CategoryEditorComponent
+    path:'edit/:slug', component: CategoryEditorComponent
   }
 ];
 

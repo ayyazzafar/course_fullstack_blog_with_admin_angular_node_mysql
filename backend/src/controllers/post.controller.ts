@@ -4,7 +4,7 @@ import { z } from "zod";
 import { generateSlug } from "../shared/general.util";
 import { getCategoryById } from "../services/category.service";
 import { getTagsByIds } from "../services/tag.service";
-import { addPostTags, getPostTags } from "../services/post-tag.service";
+import { addPostTags, deletePostTagRelations, getPostTags } from "../services/post-tag.service";
 import { User } from "../models/User";
 
 
@@ -143,7 +143,17 @@ export const updatePostController = async (req: Request, resp: Response) => {
 
     const postTagRelations = await getPostTags(id);
 
+    if(tagIds){
+        // get the tagsIds that were not in the body of this http request.
+        const tagIdsToDelete = postTagRelations.filter((postTagRelation) => {
+            return !tagIds?.includes(postTagRelation.tagId!);
+        });
 
+        // delete tags from post
+        tagIdsToDelete.forEach(async (postTagRelation) => {
+            await postTagRelation.destroy();
+        });
+    }
 
     // add tags to post
     if (tagIds && tagIds.length > 0) {
@@ -190,6 +200,8 @@ export const deletePostController = async (req: Request, resp: Response) => {
     // make sure if user has rights to delete the post
     if (post.userId !== userId)
         return resp.status(403).json({ message: "You are not authorized to delete this post" });
+
+    await deletePostTagRelations({postId: id});
 
 
     await deletePost(id);
