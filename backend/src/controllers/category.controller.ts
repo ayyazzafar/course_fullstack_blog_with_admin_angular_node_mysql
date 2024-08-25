@@ -13,7 +13,7 @@ export const getCategories = async (req: Request, res: Response) => {
     // get user from req
     const user = (req as any).user as User;
     const categories = await getAllCategories({
-        userId: user.get('id')
+        userId: user?.get('id')
     });
     console.log('categories', JSON.stringify(categories))
     res.json(categories)
