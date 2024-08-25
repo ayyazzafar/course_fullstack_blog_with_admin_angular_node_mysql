@@ -3,7 +3,7 @@ import { Resend } from "resend";
 export function sendConfirmationEmail(email: string, token: string) {
   const html = `
     <h1>Confirm your email</h1>
-    <p>Click <a href="http://localhost:3000/api/auth/confirm-email/${token}">here</a> to confirm your email</p>
+    <p>Click <a href="${process.env.BACKEND_URL}/api/auth/confirm-email/${token}">here</a> to confirm your email</p>
 
      
     `;
