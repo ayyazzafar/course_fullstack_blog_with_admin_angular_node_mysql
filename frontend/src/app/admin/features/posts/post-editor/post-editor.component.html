@@ -8,7 +8,7 @@
         </mat-card-header>
 
         <mat-card-content>
-            <mat-form-field appearance="outline">
+            <mat-form-field appearance="fill">
                 <mat-label>Title</mat-label>
                 <input formControlName="title" matInput placeholder="Title">
                 <mat-error>Please
@@ -16,7 +16,7 @@
                 </mat-error>
             </mat-form-field>
 
-            <mat-form-field appearance="outline">
+            <mat-form-field appearance="fill">
                 <mat-label>Select category</mat-label>
                 <mat-select formControlName="categoryId" matInput placeholder="Category">
 
@@ -34,7 +34,7 @@
                 </mat-error>
             </mat-form-field>
 
-            <mat-form-field appearance="outline">
+            <mat-form-field appearance="fill">
                 <mat-label>Content</mat-label>
                 <textarea formControlName="content" matInput placeholder="Content" rows="5"></textarea>
                 <mat-error>Please
@@ -70,7 +70,7 @@
 
 
             @if(showTagsDropdown){
-            <mat-form-field appearance="outline" class="mt-5">
+            <mat-form-field appearance="fill" class="mt-5">
                 <mat-label>Select tag</mat-label>
                 <mat-select matInput placeholder="Tag" (selectionChange)="addTag($event.value)" >
 
