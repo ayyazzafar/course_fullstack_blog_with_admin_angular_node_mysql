@@ -1,14 +1,12 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { Component, inject } from '@angular/core';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { ICategory } from '../../../../core/interfaces/models/category.model.interface';
-import moment from 'moment';
-import { CategoryService } from '../../../../core/services/category.service';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIcon } from '@angular/material/icon';
-import { lastValueFrom } from 'rxjs';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { RouterModule } from '@angular/router';
+import moment from 'moment';
+import { lastValueFrom } from 'rxjs';
 import { ITag } from '../../../../core/interfaces/models/tag.model.interface';
 import { TagService } from '../../../../core/services/tag.service';
 
@@ -66,9 +64,9 @@ export class TagsListComponent {
 
   deleteSelectedTags() {
     const selectedTags = this.selection.selected;
-    const selectedCategoryIds = selectedTags.map(category => category.id);
+    const selectedTagIds = selectedTags.map(category => category.id);
     let promises =
-      selectedCategoryIds.map((id) => {
+    selectedTagIds.map((id) => {
         let ob = this.tagService.deleteTag(id);
         // convert into promise
         return lastValueFrom(ob)

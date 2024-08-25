@@ -10,6 +10,7 @@ export interface IPost{
     userId: string;
     user: IUser
     categoryId: number;
+    totalComments?: number;
     category: ICategory;
     createdAt: string;
     updatedAt: string;

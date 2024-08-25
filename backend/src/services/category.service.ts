@@ -1,10 +1,21 @@
 import { Category } from "../models/Category";
 
 
-export async function getAllCategories(){
+export async function getAllCategories(filters?: {
+    userId?: number
+}){
+
+    const where: any = {};
+
+    if(filters){
+        if(filters.userId){
+            where.userId = filters.userId;
+        }
+    }
     
     const categories = await Category.findAll(
-        {
+        {   
+            where,
             order:[
                 ['id', 'DESC']
             ]

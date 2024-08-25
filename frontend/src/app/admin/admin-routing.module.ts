@@ -27,6 +27,11 @@ const routes: Routes = [
         loadChildren: () =>
           import('./features/tags/tags.module').then((m) => m.TagsModule),
       },
+      {
+        path: 'comments',
+        loadChildren: () =>
+          import('./features/comments/comments.module').then((m) => m.CommentsModule),
+      },
     ],
   },
 ];

@@ -27,7 +27,7 @@ import { PostService } from '../../../../core/services/post.service';
 })
 export class PostsListComponent {
   moment = moment;
-  displayedColumns: string[] = ['select', 'id', 'title', 'categoryId', 'createdAt', 'updatedAt', 'actions'];
+  displayedColumns: string[] = ['select', 'id', 'title', 'totalComments', 'categoryId', 'createdAt', 'updatedAt', 'actions'];
   dataSource = new MatTableDataSource<IPost>([]);
   selection = new SelectionModel<IPost>(true, []);
   postService = inject(PostService)

@@ -6,6 +6,7 @@ import { getCategoryById } from "../services/category.service";
 import { getTagsByIds } from "../services/tag.service";
 import { addPostTags, deletePostTagRelations, getPostTags } from "../services/post-tag.service";
 import { User } from "../models/User";
+import { getTotalCommentsByPostIds } from "../services/comment.service";
 
 
 
@@ -16,6 +17,12 @@ export const getAllPostsController = async (req: Request, res: Response) => {
         categoryId: z.string().optional(),
         tagId: z.string().optional()
     });
+
+    // get user from req
+    const user = (req as any).user as User;
+
+
+
 
     // parsing query string variables
     const safeData = schema.safeParse(req.query);
@@ -28,9 +35,27 @@ export const getAllPostsController = async (req: Request, res: Response) => {
 
     const posts = await getAllPosts({
         categoryId: categoryId ? parseInt(categoryId) : undefined,
-        tagId: tagId ? parseInt(tagId) : undefined
+        tagId: tagId ? parseInt(tagId) : undefined,
+        userId: user.get('id')
     });
-    return res.json(posts)
+
+   let postIds = posts.map((post) => post.id);
+   const totalCommentsByPostIds = await getTotalCommentsByPostIds(postIds);
+
+    // adding total comments to each post
+    const postsWithTotalComments = posts.map((post) => {
+         const totalComments = totalCommentsByPostIds.find((
+            totalCommentsByPostId
+         )=>
+            totalCommentsByPostId.postId === post.id);
+
+            return {
+                ...post.toJSON(),
+                totalComments: totalComments?.get('totalComments') || 0
+            }
+    });
+
+    return res.json(postsWithTotalComments)
 }
 
 export const addPostController = async (req: Request, res: Response) => {

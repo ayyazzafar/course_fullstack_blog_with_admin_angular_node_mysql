@@ -1,3 +1,4 @@
+import { Sequelize } from "sequelize";
 import { Comment } from "../models/Comment"
 import { User } from "../models/User";
 
@@ -59,3 +60,18 @@ export const deletePostComments = async (postId: number | number []) => {
         }
     });
 }
+
+
+export const getTotalCommentsByPostIds = async (postIds: number[]) => {
+    return Comment.findAll({
+        attributes: ['postId', [
+            Sequelize.fn('COUNT', Sequelize.col('id')), 'totalComments'
+        ]],
+        where: {
+            postId: postIds // postIds in (1, 2, 3)
+        },
+        group: ['postId']
+        
+    })
+}
+
