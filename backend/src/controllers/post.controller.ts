@@ -6,7 +6,7 @@ import { getCategoryById } from "../services/category.service";
 import { getTagsByIds } from "../services/tag.service";
 import { addPostTags, deletePostTagRelations, getPostTags } from "../services/post-tag.service";
 import { User } from "../models/User";
-import { getTotalCommentsByPostIds } from "../services/comment.service";
+import { deletePostComments, getTotalCommentsByPostIds } from "../services/comment.service";
 
 
 
@@ -228,6 +228,7 @@ export const deletePostController = async (req: Request, resp: Response) => {
 
     await deletePostTagRelations({postId: id});
 
+    await deletePostComments(id); // delete post comments
 
     await deletePost(id);
 
